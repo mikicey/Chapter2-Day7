@@ -1,0 +1,531 @@
+body{
+    background-color: #E3E7EB;
+}
+
+section{
+    padding: 64px;
+}
+
+
+/* 1. HOME PAGE */
+
+                          /* Intro card */
+.intro{
+    border-radius: 8px;
+
+    display: flex;
+
+    margin: 0 auto;
+    padding: 48px;
+
+    background-color: #FEFEFE;
+    box-shadow: 0px 0px 64px rgb(215, 215, 215);
+}
+
+.intro-main{
+    flex: 2;
+    margin-right: 48px;
+}
+        /* left */
+/* TITLE AND DES  */
+.intro__title{
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 0px;
+}
+
+
+.intro__des{
+    margin: 32px 0px;
+    font-size: 18px;
+}
+
+
+/* BTN GROUP */
+
+.btn-group{
+    margin: 32px 0;
+}
+
+.contact-btn{
+
+    cursor: pointer;
+   display: inline-block;
+   text-decoration: none;
+
+   color: white;
+   background-color: #111727;
+
+   font-size: 18px;
+   font-weight: bold;
+
+   border-radius:32px; 
+   padding: 16px 32px;
+   margin-right: 32px;
+}
+
+.contact-btn:hover{
+  color: white;
+}
+
+
+.download-btn{
+      
+      cursor: pointer;
+
+      display: inline-flex;
+      align-items: center;
+
+      font-size: 18px;
+      color: black;
+      
+}
+
+.download-btn img {
+    margin-left: 6px;
+}
+
+
+/* SOCIALS */
+
+.intro__socials{
+    margin: 0 auto;
+    margin-bottom: 48px;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.intro__socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    padding: 4px 4px;
+    margin: 0 8px;
+
+    border-radius: 50vh;
+    background-color: black;
+    
+    text-decoration: none;
+}
+
+.fa-brands{
+     color: white;
+}
+
+        /* right side */
+
+/*  CARD  */
+.intro-card{
+    overflow: hidden;
+    box-shadow: 0px 0px 64px rgb(215, 215, 215);
+
+    width: 400px;
+    display: inline-flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+    border-radius: 12px;
+}
+
+.intro-card img{
+     width: 100%;
+     height: 400px;
+     object-fit: cover;
+}
+
+.intro-card strong{
+    margin-top: 18px;
+
+    font-size: 28px;
+    text-align: center;
+}
+
+.intro-card p {
+    font-size: 20px;
+    text-align: center;
+    
+    margin-top: 4px;
+    margin-bottom: 18px;
+}
+
+
+
+                   /* My Project Section */
+
+.projects-section{
+    position: relative;
+    background-color: #F4F3F3;
+    padding: 28px 128px 300px 128px;
+                }
+.projects{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 64px;
+    margin-bottom: 100px;
+}
+
+.projects-section h2{
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 32px;
+}
+
+.card {
+    cursor: pointer;
+    box-shadow: 0px 0px 6px rgb(188, 188, 188);
+    border-radius: 12px;
+
+    padding: 16px;
+    margin: 32px 16px;
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    color: #111727 ;
+}
+
+.upper-project {
+    display: flex;
+    flex-direction: column;
+}
+
+.lower-project{
+    display: flex;
+    flex-direction: column;
+}
+
+.card .upper-project > img{
+    border-radius: 12px;
+    height: 300px;
+    object-fit: cover;
+    object-position: top;
+
+    margin-bottom: 8px;
+}
+
+.card .upper-project > span { /*  title */
+    font-weight: bold;
+    color: #111727 ;
+    
+}
+
+.project-duration{
+    font-weight: bold;
+    font-size: 12px;
+    margin: 6px 0 24px 0;
+}
+
+.project-des{
+    font-size: 14px;
+    word-break: break-all;
+}
+
+.project-logos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.project-logos i{
+    margin-right: 16px;
+    font-size: 24px;
+    color: #000000;
+}
+
+.project-logos img{
+    margin-right: 16px;
+}
+
+.project-buttons{
+ display: flex;
+}
+
+.project-buttons button{
+   position: relative;
+   width: 100%;
+   background-color: #111727 ;
+   font-weight: bold;
+   color: white;
+   appearance: none;
+   border:none;
+   border-radius: 8px;
+   padding: 4px 8px;
+
+   cursor: pointer;
+}
+
+.project-buttons a:first-child{
+    margin-right: 4px;
+ }
+
+ .project-buttons a {
+    text-decoration: none;
+    flex: 1;
+ }
+
+.empty-project{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+/* 2. ADD PROJECT PAGE */
+.addproject-section h2{
+      font-weight: bold;
+      text-align: center;
+      color: #000000;
+}
+
+.addproject-section form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 600px;
+}
+
+.addproject-section .form-label{
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+    text-align: start;
+}
+
+.addproject-section form > div  {
+    width: 100%;
+}
+
+.addproject-section form > label  {
+    width: 100%;
+}
+
+.addproject-section form input{
+    box-shadow: 0px 2px 4px rgb(177, 177, 177);
+    cursor: pointer;
+}
+
+.addproject-section form textarea{
+    resize: none;
+    box-shadow: 0px 2px 4px rgb(177, 177, 177);
+    cursor: pointer;
+}
+
+.add-btn{
+    padding: 8px 24px;
+    background-color: #111727;
+    color: white;
+    border-radius: 32px;
+    transition: 150ms;
+}
+
+.add-btn:hover{
+    background-color: #111727;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* 3. EDIT PAGE */
+.update-btn{
+    color: white;
+    background-color: #111727;
+    font-weight: bold;
+    padding: 8px 24px ;
+    border-radius: 12px;
+    border: none;
+
+    margin-right: 12px;
+}
+
+.cancel-btn{
+    color: white;
+    background-color: red;
+    font-weight: bold;
+    padding: 8px 24px ;
+    border-radius: 12px;
+    border: none;
+}
+
+/*  4. FORM PAGE */
+.contact-section h2{
+    font-weight: bold;
+    text-align: center;
+    color: #000000;
+
+}
+
+.contact-section form{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 600px;
+}
+
+.contact-section .form-label{
+  font-size: 18px;
+  color: black;
+  font-weight: 600;
+  text-align: start;
+}
+
+.contact-section form > div  {
+  width: 100%;
+}
+
+.contact-section form > label  {
+  width: 100%;
+}
+
+.contact-section form input{
+  box-shadow: 0px 2px 4px rgb(177, 177, 177);
+  cursor: pointer;
+}
+
+.contact-section form select{
+    box-shadow: 0px 2px 4px rgb(177, 177, 177);
+    cursor: pointer;
+  }
+
+.contact-section form textarea{
+  resize: none;
+  box-shadow: 0px 2px 4px rgb(177, 177, 177);
+  cursor: pointer;
+}
+
+.submit-btn{
+  padding: 8px 24px;
+  background-color: #111727;
+  color: white;
+  border-radius: 32px;
+  transition: 150ms;
+}
+
+.submit-btn:hover{
+  background-color: #111727;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* 5.Register Page */
+.register-section h2{
+    font-weight: bold;
+    text-align: center;
+    color: #000000;
+
+}
+
+.register-section form{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 600px;
+}
+
+.register-section .form-label{
+  font-size: 18px;
+  color: black;
+  font-weight: 600;
+  text-align: start;
+}
+
+.register-section form > div  {
+  width: 100%;
+}
+
+.register-section form > label  {
+  width: 100%;
+}
+
+.register-section form input{
+  box-shadow: 0px 2px 4px rgb(177, 177, 177);
+  cursor: pointer;
+}
+
+
+.submit-btn{
+  padding: 8px 24px;
+  background-color: #111727;
+  color: white;
+  border-radius: 32px;
+  transition: 150ms;
+  margin-top: 32px;
+}
+
+.submit-btn:hover{
+  background-color: #111727;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* 6. Login PAge */
+.login-section h2{
+    font-weight: bold;
+    text-align: center;
+    color: #000000;
+
+}
+
+.login-section form{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 600px;
+}
+
+.login-section .form-label{
+  font-size: 18px;
+  color: black;
+  font-weight: 600;
+  text-align: start;
+}
+
+.login-section form > div  {
+  width: 100%;
+}
+
+.login-section form > label  {
+  width: 100%;
+}
+
+.login-section form input{
+  box-shadow: 0px 2px 4px rgb(177, 177, 177);
+  cursor: pointer;
+}
+
+
+.submit-btn{
+  margin-top: 32px;
+  padding: 8px 24px;
+  background-color: #111727;
+  color: white;
+  border-radius: 32px;
+  transition: 150ms;
+}
+
+.submit-btn:hover{
+  background-color: #111727;
+  color: white;
+  transform: scale(1.1);
+}
+
+
+
+
+                                   /* SPECIAL CLASSES */
+.error-message{
+   color: red;
+   font-size: 10px;
+};
+
+.error-input{
+  border: 1px solid red o !important;
+};
