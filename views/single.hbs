@@ -36,9 +36,11 @@
                 <a class="nav-link" aria-current="page" href="/">Home</a>
               </li>
 
+            {{#if isLogin}}
               <li class="nav-item me-5">
-                <a class="nav-link" href="/addmyproject">Add Project</a>
+                <a class="nav-link active" href="/addmyproject">Add Project</a>
               </li>
+            {{/if}}
               
             </ul>
             
@@ -72,11 +74,12 @@
                      <span><i class="fa-solid fa-clock-rotate-left"></i> {{data.duration}}</span>
                      <b class="tech">Technologies</b>
                      <div class="">
-                          {{#if data.isReact}}<span><i class="fa-brands fa-react"></i>React JS</span> {{/if}}
-                          {{#if data.isJS}}<span><i class="fa-brands fa-js"></i>JavaScript</span> {{/if}}
-                          {{#if data.isNode}}<span><i class="fa-brands fa-node-js"></i>NodeJS</span> {{/if}}
-                          {{#if data.isCSS}}<span><i class="fa-brands fa-css3-alt"></i>CSS</span> {{/if}}
+                          {{#if data.tech.isReact}}<span><i class="fa-brands fa-react"></i>React JS</span> {{/if}}
+                          {{#if data.tech.isJS}}<span><i class="fa-brands fa-js"></i>JavaScript</span> {{/if}}
+                          {{#if data.tech.isNode}}<span><i class="fa-brands fa-node-js"></i>NodeJS</span> {{/if}}
+                          {{#if data.tech.isCSS}}<span><i class="fa-brands fa-css3-alt"></i>CSS</span> {{/if}}
                      </div>
+                     <p style="color:blue;font-size:12px;">This is owned by: {{data.username}}</p>
                  </div>
           </div>
 

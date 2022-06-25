@@ -36,9 +36,11 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
 
+            {{#if isLogin}}
               <li class="nav-item me-5">
-                <a class="nav-link" href="/addmyproject">Add Project</a>
+                <a class="nav-link active" href="/addmyproject">Add Project</a>
               </li>
+            {{/if}}
               
             </ul>
             
@@ -121,7 +123,12 @@
 
     <!-- My Project -->
     <section class="projects-section">
+
+      {{#if isLogin}}
         <h2>MY PROJECT</h2>
+      {{else}}
+        <h2>PEOPLE'S PROJECT</h2>
+      {{/if}}
 
         <div class="projects">
 
@@ -133,14 +140,15 @@
                        <span class="project-title">{{this.title}}</span>
                        <p class="project-duration">duration: {{this.duration}}</p>
                        <p class="project-des">{{this.description}}</p>
+                       <p style="color: blue; font-size:12px">Owned by: {{this.username}}</p>
                  </div>
 
                  <div class="lower-project" >
                         <div class="project-logos" >
-                            {{#if this.isNode}} <i class="fa-brands fa-node-js"></i> {{/if}}
-                            {{#if this.isReact}}<i class="fa-brands fa-react"></i> {{/if}}
-                            {{#if this.isJS}}<i class="fa-brands fa-js"></i>{{/if}}
-                            {{#if this.isCSS}}<i class="fa-brands fa-css3-alt"></i>{{/if}}
+                            {{#if this.tech.isNode}} <i class="fa-brands fa-node-js"></i> {{/if}}
+                            {{#if this.tech.isReact}}<i class="fa-brands fa-react"></i> {{/if}}
+                            {{#if this.tech.isJS}}<i class="fa-brands fa-js"></i>{{/if}}
+                            {{#if this.tech.isCSS}}<i class="fa-brands fa-css3-alt"></i>{{/if}}
                         </div>
      
                           

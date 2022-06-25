@@ -19,7 +19,7 @@ module.exports.getDuration = (start,end) => {
     const duration = endMonth - startMonth + yearDuration;
     
     if(duration === 0) return 'Dibawah sebulan'
-    return duration + ''  + 'bulan' 
+    return duration + ' '  + 'bulan' 
 };
 
 

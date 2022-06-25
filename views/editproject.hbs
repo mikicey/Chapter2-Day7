@@ -33,9 +33,11 @@
                 <a class="nav-link" aria-current="page" href="/">Home</a>
               </li>
 
+            {{#if isLogin}}
               <li class="nav-item me-5">
                 <a class="nav-link active" href="/addmyproject">Add Project</a>
               </li>
+            {{/if}}
               
             </ul>
             
@@ -62,7 +64,7 @@
               <!-- Project Name -->
               <div class="mb-4" >
                   <label for="project-name" class="form-label mb-1">Project Name</label>
-                  <input type="text" class="form-control" id="project-name" name="title" value={{dataToEdit.title}}>
+                  <input type="text" class="form-control" id="project-name" name="title" value="{{dataToEdit.title}}">
               </div>
 
               <!-- Project Date -->
@@ -137,7 +139,7 @@
               <!-- Project Image -->
               <div class="image-input mb-5" style="position: relative;">
                  <label for="project-img" class="form-label mb-1">Upload Image</label>
-                 <input class="form-control" id="project-img" type="file" name="image">
+                 <input class="form-control" id="project-img" type="file" name="image" value="tugas hlmn 1.png">
                  <img src="/images/file.png" style="position: absolute; right: 8px; top: 36px;">
               </div>
 
@@ -159,10 +161,10 @@
 
          });
       
-         document.querySelector("#node").checked = {{dataToEdit.isNode}};
-         document.querySelector("#js").checked = {{dataToEdit.isJS}};
-         document.querySelector("#react").checked = {{dataToEdit.isReact}} ;
-         document.querySelector("#css").checked = {{dataToEdit.isCSS}};
+         document.querySelector("#node").checked = {{dataToEdit.tech.isNode}};
+         document.querySelector("#js").checked = {{dataToEdit.tech.isJS}};
+         document.querySelector("#react").checked = {{dataToEdit.tech.isReact}} ;
+         document.querySelector("#css").checked = {{dataToEdit.tech.isCSS}};
 
 
     </script>

@@ -1,5 +1,8 @@
 const{checkLogin,alreadyLogin} = require("./middleware/authentication");
 
+
+
+
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 80
@@ -47,7 +50,7 @@ app.get("/register", alreadyLogin, (req,res)=>{
     res.render("register",{isLogin:req.session.isLogin})
 })
 
-app.post("/register",(req,res)=>{
+app.post("/register", alreadyLogin, (req,res)=>{
     const {email,password,username} = req.body;
     const hashedPassword = bcrypt.hashSync(password,10);
 
@@ -73,7 +76,7 @@ app.get("/login", alreadyLogin,(req,res)=>{
     res.render("login",{isLogin:req.session.isLogin});
 })
 
-app.post("/login", (req,res)=>{
+app.post("/login", alreadyLogin,(req,res)=>{
      const {email,password} = req.body;
 
      client.query(`SELECT * FROM public.users WHERE email=$1`,[email], (err,result)=>{
@@ -92,7 +95,7 @@ app.post("/login", (req,res)=>{
         } else {
             req.session.isLogin = true;
             req.session.user = {
-                id : result.rows[0].id,
+                id : result.rows[0].user_id,
                 username: result.rows[0].username,
                 email:result.rows[0].email
             }
@@ -108,31 +111,38 @@ app.post("/login", (req,res)=>{
 })
 
 // LOGOUT 
-app.get("/logout",(req,res)=>{
+app.get("/logout",checkLogin,(req,res)=>{
     req.session.destroy();
     res.redirect("/");
 })
-
-
-
 
                         //    ROUTES
 // GET ALL
 app.get("/" , (req,res)=> {
     if(err) throw err;
-   
     
-    
-    client.query("SELECT * FROM public.projects WHERE projectowner_id = $1 ORDER BY id DESC",[req.session.user.id],(err,result)=>{
+    client.query(`SELECT public.projects.*, public.users.user_id , public.users.username
+                  FROM public.projects LEFT JOIN public.users 
+                  ON public.projects.projectowner_id = public.users.user_id 
+                  ORDER BY public.projects.id DESC`,(err,result)=>{
         if(err) throw err;
-
         let data = result.rows;
+
+        // Default
         data = data.map((item)=>{
             return {
                 ...item,isLogin:req.session.isLogin
             }
         })
+
+        // If already loginned
+        if(req.session.isLogin){
+            data = data.filter((item)=> item.projectowner_id == req.session.user.id)
+        }
+
+        // Check Post
         const isPostNotThere = data.length == 0 ? true : false;
+
         res.render("home",{data:data,isPostNotThere,isLogin:req.session.isLogin})
         
     })
@@ -145,8 +155,12 @@ app.get("/single/:id",(req,res)=>{
     if(err) throw err;
 
     const id = req.params.id;
+    
 
-    client.query(`SELECT * FROM public.projects WHERE id=${id}`, (err,result)=>{
+    client.query(`SELECT public.projects.*, public.users.user_id , public.users.username
+    FROM public.projects LEFT JOIN public.users 
+    ON public.projects.projectowner_id = public.users.user_id 
+    WHERE id=${id}`, (err,result)=>{
         let data = result.rows[0];
         res.render("single",{data:data,isLogin:req.session.isLogin})
         
@@ -170,52 +184,83 @@ app.post("/postmyproject",checkLogin, upload.single('image'),(req,res)=>{
     const id = req.session.user.id;
     const newData = req.body;
 
+    // Duration
     const duration = getDuration(req.body.startDate,req.body.endDate);
     const stringDate = getDateStringFormat(req.body.startDate) + '-' + getDateStringFormat(req.body.endDate);
 
-    const isNode = req.body.node ? true : false;
-    const isReact = req.body.react ? true : false;
-    const isJS = req.body.js ? true : false;
-    const isCSS = req.body.css ? true : false;
+    // Tech
+    const technologies = {
+        isNode: req.body.node ? true : false,
+        isReact: req.body.react ? true:false,
+        isJS : req.body.js ? true : false,
+        isCSS : req.body.css ? true : false
+    };
 
+    // Image
     const image = req.file.filename;
 
-    
 
-
-   
-    client.query(`INSERT INTO public.projects("title", "startDate", "endDate", "stringDate", duration, description, img, "isNode", "isReact", "isJS", "isCSS", projectowner_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, [newData.title, newData.startDate, newData.endDate, stringDate, duration, newData.description, image, isNode,isReact,isJS,isCSS,id] , (err,result)=>{
+    client.query(`INSERT INTO public.projects("title", "startDate", "endDate", "stringDate", duration, description, img,  projectowner_id,tech)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [newData.title, newData.startDate, newData.endDate, stringDate, duration, newData.description, image, id,technologies] , (err,result)=>{
             if(err) throw err;
             res.redirect("/"); })
 });
+
 
 // DELETE
 app.get("/deletemyproject/:id",checkLogin,(req,res)=>{
 
     
     const id = req.params.id;
-    
-    client.query(`DELETE FROM public.projects
-	WHERE id=${id}`, (err,result)=>{
-        if(err) throw err;
-        res.redirect("/");
+    const user_id = req.session.user.id;
+
+    // Check authority
+    client.query(`SELECT projectowner_id FROM public.projects WHERE id=${id}`,(err,result)=>{
+         
+
+          if(user_id != result.rows[0].projectowner_id){
+            console.log("Not Deleted")
+            return res.sendStatus(404);
+          } 
+            
+            // Delete
+            console.log("Deleted")
+            client.query(`DELETE FROM public.projects
+            WHERE id=${id}`, (err,result)=>{
+                if(err) throw err;
+                res.redirect("/");
+                
+            })
+
+          
     })
+    
+   
 
 })
 
 // EDIT
      // get edit form page
-app.get("/editproject/:id", checkLogin , (req,res)=>{
+app.get("/editproject/:id", checkLogin,(req,res)=>{
        if(err) throw err;
        const id = req.params.id;
+       const user_id = req.session.user.id;
 
-       client.query(`SELECT * FROM public.projects WHERE id=${id}`, (err,result)=>{
-        if(err) throw err;
 
-        let data = result.rows[0];
-        res.render("editproject",{dataToEdit:data,isLogin:req.session.isLogin})
-    });
+       // Check authority
+    client.query(`SELECT projectowner_id FROM public.projects WHERE id=${id}`,(err,result)=>{
+        if(user_id != result.rows[0].projectowner_id)
+        { return res.sendStatus(404)} 
+          
+          // Show Page
+            client.query(`SELECT * FROM public.projects WHERE id=${id}`, (err,result)=>{
+            if(err) throw err;
+    
+            let data = result.rows[0];
+            res.render("editproject",{dataToEdit:data,isLogin:req.session.isLogin})
+        })
+    })
+  
        
 
 });
@@ -223,30 +268,46 @@ app.get("/editproject/:id", checkLogin , (req,res)=>{
 app.post("/editmyproject/:id", checkLogin, upload.single('image'), (req,res)=>{
     if(err) throw err;
 
-    const id = req.params.id
+    const id = req.params.id;
+    const user_id = req.session.user.id;
     const updatedData = req.body;
 
+           // Check authority
+           client.query(`SELECT projectowner_id FROM public.projects WHERE id=${id}`,(err,result)=>{
+            if(user_id != result.rows[0].projectowner_id)
+            { return res.sendStatus(404)} 
+              
+           // Set Update
 
-    const duration = getDuration(req.body.startDate,req.body.endDate);
-    const stringDate = getDateStringFormat(req.body.startDate) + '-' + getDateStringFormat(req.body.endDate);
+                // Time related
+                const duration = getDuration(req.body.startDate,req.body.endDate);
+                const stringDate = getDateStringFormat(req.body.startDate) + '-' + getDateStringFormat(req.body.endDate);
 
+                // Tech Related
+                const technologies = {
+                isNode: req.body.node ? true : false,
+                isReact: req.body.react ? true:false,
+                isJS : req.body.js ? true : false,
+                isCSS : req.body.css ? true : false
+                 };
 
-    const isNode = req.body.node ? true : false;
-    const isReact = req.body.react ? true : false;
-    const isJS = req.body.js ? true : false;
-    const isCSS = req.body.css ? true : false;
+                // Image Related
+                const image = req.file.filename;
 
-    
-    const image = req.file.filename;
+                     // Update Page
+                client.query(`UPDATE public.projects
+	            SET title=$1, "startDate"=$2, "endDate"=$3, "stringDate"=$4, duration=$5, description=$6, img=$7, tech=$8
+	            WHERE id=$9`,[updatedData.title, updatedData.startDate, updatedData.endDate, stringDate, duration, updatedData.description, image, technologies,id], (err,result)=>{
+                if(err) throw err;
+                res.redirect("/");
+                });
+            
+        })
 
-    client.query(`UPDATE public.projects
-	SET title=$1, "startDate"=$2, "endDate"=$3, "stringDate"=$4, duration=$5, description=$6, img=$7, "isNode"=$8, "isReact"=$9, "isJS"=$10, "isCSS"=$11 
-	WHERE id=$12`,[updatedData.title, updatedData.startDate, updatedData.endDate, stringDate, duration, updatedData.description, image, isNode,isReact,isJS,isCSS,id], (err,result)=>{
-      if(err) throw err;
-      res.redirect("/");
-    });
 
 })
+
+
 
 
 });
