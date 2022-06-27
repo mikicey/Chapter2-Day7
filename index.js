@@ -219,12 +219,12 @@ app.get("/deletemyproject/:id",checkLogin,(req,res)=>{
          
 
           if(user_id != result.rows[0].projectowner_id){
-            console.log("Not Deleted")
+           
             return res.sendStatus(404);
           } 
             
             // Delete
-            console.log("Deleted")
+        
             client.query(`DELETE FROM public.projects
             WHERE id=${id}`, (err,result)=>{
                 if(err) throw err;
