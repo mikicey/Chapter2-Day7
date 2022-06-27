@@ -179,8 +179,9 @@ app.get("/contact",(req,res)=>{
 
 // POST
 app.post("/postmyproject",checkLogin, upload.single('image'),(req,res)=>{
-
+    if(!req.file) {return res.send("Please fill the image input!")}
     if(err) throw err;
+
     const id = req.session.user.id;
     const newData = req.body;
 
@@ -266,6 +267,7 @@ app.get("/editproject/:id", checkLogin,(req,res)=>{
 });
     // submit form from edit page
 app.post("/editmyproject/:id", checkLogin, upload.single('image'), (req,res)=>{
+    if(!req.file) {return res.send("Please fill the image input!")}
     if(err) throw err;
 
     const id = req.params.id;
